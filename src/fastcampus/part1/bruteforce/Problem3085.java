@@ -1,4 +1,4 @@
-package fastcampus.part1;
+package fastcampus.part1.bruteforce;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -75,6 +75,83 @@ public class Problem3085 {
       }
     }
     return cnt;
+  }
+
+  /**
+   * 판화
+   * <p/>
+   * https://www.acmicpc.net/problem/1730
+   */
+  public static class Problem1730 {
+
+    public static void main(String[] args) throws IOException {
+
+      BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+      int N = Integer.parseInt(br.readLine());
+
+      String[][] dotArr = new String[N][N];
+      for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+          dotArr[i][j] = ".";
+        }
+      }
+
+      int x = 0;
+      int y = 0;
+
+      char[] dirArr = br.readLine().toCharArray();
+      for (char dir : dirArr) {
+        int preX = x, preY = y; // 이전 위치 저장
+
+        // 방향에 따른 좌표 변경
+        if (dir == 'U' && x > 0) {
+          x--;
+        } else if (dir == 'D' && x < N - 1) {
+          x++;
+        } else if (dir == 'L' && y > 0) {
+          y--;
+        } else if (dir == 'R' && y < N - 1) {
+          y++;
+        }
+
+        // 이전 위치 업데이트
+        if (preX == x) { // 수평 이동
+          if ("|".equals(dotArr[preX][preY])) {
+            dotArr[preX][preY] = "+"; // 교차점 처리
+          } else {
+            dotArr[preX][preY] = "-"; // 수평 이동 표시
+          }
+        } else if (preY == y) { // 수직 이동
+          if ("-".equals(dotArr[preX][preY])) {
+            dotArr[preX][preY] = "+"; // 교차점 처리
+          } else {
+            dotArr[preX][preY] = "|"; // 수직 이동 표시
+          }
+        }
+
+        // 새로운 위치 업데이트
+        if (preX == x) { // 수평 이동
+          if ("|".equals(dotArr[x][y])) {
+            dotArr[x][y] = "+"; // 교차점 처리
+          } else if (!"-".equals(dotArr[x][y])) {
+            dotArr[x][y] = "-"; // 수평 이동 표시
+          }
+        } else if (preY == y) { // 수직 이동
+          if ("-".equals(dotArr[x][y])) {
+            dotArr[x][y] = "+"; // 교차점 처리
+          } else if (!"|".equals(dotArr[x][y])) {
+            dotArr[x][y] = "|"; // 수직 이동 표시
+          }
+        }
+      }
+
+      for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+          System.out.print(dotArr[i][j]);
+        }
+        System.out.println();
+      }
+    }
   }
 }
 

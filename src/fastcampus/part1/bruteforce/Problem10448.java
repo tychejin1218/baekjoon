@@ -1,4 +1,4 @@
-package fastcampus.part1;
+package fastcampus.part1.bruteforce;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package fastcampus.part1;
+package fastcampus.part1.complexity;
 
 import java.io.BufferedReader;
 import java.io.IOException;
