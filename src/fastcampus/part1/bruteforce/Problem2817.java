@@ -3,11 +3,10 @@ package fastcampus.part1.bruteforce;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.TreeMap;
 
 public class Problem2817 {
 
@@ -17,7 +16,7 @@ public class Problem2817 {
     int X = Integer.parseInt(br.readLine());
     int N = Integer.parseInt(br.readLine());
 
-    double minVoteCnt = X * 0.05;
+    int minVoteCnt = (int) Math.ceil(X * 0.05);
 
     Map<String, Integer> staffMap = new HashMap<>();
     while (N-- > 0) {
@@ -29,31 +28,31 @@ public class Problem2817 {
       }
     }
 
-    List<StaffPoints> scoreList = new ArrayList<>();
+    PriorityQueue<StaffPoints> scoreQueue = new PriorityQueue<>();
     for (Map.Entry<String, Integer> entry : staffMap.entrySet()) {
       String staffNm = entry.getKey();
       int voteCnt = entry.getValue();
       for (int i = 1; i <= 14; i++) {
-        scoreList.add(new StaffPoints(staffNm, voteCnt / (double) i));
+        double score = voteCnt / (double) i;
+        scoreQueue.add(new StaffPoints(staffNm, score));
+        if (scoreQueue.size() > 14) {
+          scoreQueue.poll();
+        }
       }
     }
 
-    scoreList.sort((o1, o2) -> Double.compare(o2.score, o1.score));
-    Map<String, Integer> chipMap = new HashMap<>();
-    for (int i = 0; i < 14 && i < scoreList.size(); i++) {
-      StaffPoints point = scoreList.get(i);
-      chipMap.put(point.name, chipMap.getOrDefault(point.name, 0) + 1);
+    Map<String, Integer> chipMap = new TreeMap<>();
+    while (!scoreQueue.isEmpty()) {
+      StaffPoints sp = scoreQueue.poll();
+      chipMap.put(sp.name, chipMap.getOrDefault(sp.name, 0) + 1);
     }
 
-    List<String> resultKeys = new ArrayList<>(chipMap.keySet());
-    Collections.sort(resultKeys);
-
-    for (String name : resultKeys) {
-      System.out.println(name + " " + chipMap.get(name));
+    for (Map.Entry<String, Integer> entry : chipMap.entrySet()) {
+      System.out.println(entry.getKey() + " " + entry.getValue());
     }
   }
 
-  static class StaffPoints {
+  static class StaffPoints implements Comparable<StaffPoints> {
 
     String name;
     double score;
@@ -62,6 +61,11 @@ public class Problem2817 {
       this.name = name;
       this.score = score;
     }
+
+    @Override
+    public int compareTo(StaffPoints other) {
+      return Double.compare(this.score, other.score);
+    }
   }
 }
 
@@ -69,11 +73,10 @@ public class Problem2817 {
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.TreeMap;
 
 public class Main {
 
@@ -83,7 +86,7 @@ public class Main {
     int X = Integer.parseInt(br.readLine());
     int N = Integer.parseInt(br.readLine());
 
-    double minVoteCnt = X * 0.05;
+    int minVoteCnt = (int) Math.ceil(X * 0.05);
 
     Map<String, Integer> staffMap = new HashMap<>();
     while (N-- > 0) {
@@ -95,31 +98,31 @@ public class Main {
       }
     }
 
-    List<StaffPoints> scoreList = new ArrayList<>();
+    PriorityQueue<StaffPoints> scoreQueue = new PriorityQueue<>();
     for (Map.Entry<String, Integer> entry : staffMap.entrySet()) {
       String staffNm = entry.getKey();
       int voteCnt = entry.getValue();
       for (int i = 1; i <= 14; i++) {
-        scoreList.add(new StaffPoints(staffNm, voteCnt / (double) i));
+        double score = voteCnt / (double) i;
+        scoreQueue.add(new StaffPoints(staffNm, score));
+        if (scoreQueue.size() > 14) {
+          scoreQueue.poll();
+        }
       }
     }
 
-    scoreList.sort((o1, o2) -> Double.compare(o2.score, o1.score));
-    Map<String, Integer> chipMap = new HashMap<>();
-    for (int i = 0; i < 14 && i < scoreList.size(); i++) {
-      StaffPoints point = scoreList.get(i);
-      chipMap.put(point.name, chipMap.getOrDefault(point.name, 0) + 1);
+    Map<String, Integer> chipMap = new TreeMap<>();
+    while (!scoreQueue.isEmpty()) {
+      StaffPoints sp = scoreQueue.poll();
+      chipMap.put(sp.name, chipMap.getOrDefault(sp.name, 0) + 1);
     }
 
-    List<String> resultKeys = new ArrayList<>(chipMap.keySet());
-    Collections.sort(resultKeys);
-
-    for (String name : resultKeys) {
-      System.out.println(name + " " + chipMap.get(name));
+    for (Map.Entry<String, Integer> entry : chipMap.entrySet()) {
+      System.out.println(entry.getKey() + " " + entry.getValue());
     }
   }
 
-  static class StaffPoints {
+  static class StaffPoints implements Comparable<StaffPoints> {
 
     String name;
     double score;
@@ -127,6 +130,11 @@ public class Main {
     StaffPoints(String name, double score) {
       this.name = name;
       this.score = score;
+    }
+
+    @Override
+    public int compareTo(StaffPoints other) {
+      return Double.compare(this.score, other.score);
     }
   }
 }
